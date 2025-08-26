@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VoltForge Circuits — Custom Electronics & PCB Manufacturing</title>
+  <meta name="description" content="Custom electronics design, rapid PCB prototyping, low-to-mid volume manufacturing, and end-to-end testing. Get a fast, reliable quote for your next hardware project." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #0b0f17;
+      --panel: #0f1624;
+      --panel-2:#121a2b;
+      --muted:#9fb0ca;
+      --text:#e6edf6;
+      --brand:#4cc9f0;
+      --brand-2:#22d3ee;
+      --accent:#a78bfa;
+      --ok:#22c55e;
+      --warn:#f59e0b;
+      --error:#ef4444;
+      --radius: 16px;
+      --radius-lg: 22px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.03);
+      --grad: radial-gradient(1200px 600px at 10% -10%, rgba(76,201,240,.18), transparent 60%),
+              radial-gradient(900px 600px at 90% -20%, rgba(167,139,250,.18), transparent 60%);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color:var(--text); background:var(--bg); line-height:1.5;
+      background-image: var(--grad);
+    }
+    a{color:inherit; text-decoration:none}
+    img{max-width:100%; display:block}
+    .container{width:min(1200px, 92%); margin:0 auto}
+
+    /* Header */
+    header{
+      position:sticky; top:0; z-index:50; backdrop-filter:saturate(1.2) blur(10px);
+      background:linear-gradient(180deg, rgba(11,15,23,.85), rgba(11,15,23,.55));
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .nav{display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 0}
+    .logo{display:flex; align-items:center; gap:10px; font-weight:800}
+    .logo svg{width:32px; height:32px}
+    .logo span{letter-spacing:.3px}
+    .nav a.link{opacity:.9; padding:8px 10px; border-radius:10px}
+    .nav a.link:hover{background:rgba(255,255,255,.06)}
+    .cta{padding:10px 16px; border-radius:999px; background:linear-gradient(90deg, var(--brand), var(--accent)); border:0; color:#081018; font-weight:800; box-shadow:var(--shadow); cursor:pointer}
+    .cta.secondary{background:transparent; color:var(--text); border:1px solid rgba(255,255,255,.1)}
+
+    /* Mobile menu */
+    .menu-btn{display:none; border:1px solid rgba(255,255,255,.15); background:transparent; color:var(--text); border-radius:12px; padding:10px}
+    .mobile-nav{display:none; flex-direction:column; gap:8px; padding:12px 0 20px}
+
+    /* Hero */
+    .hero{position:relative; padding:72px 0 40px}
+    .hero-grid{display:grid; grid-template-columns: 1.2fr .8fr; gap:30px; align-items:center}
+    .badge{display:inline-flex; align-items:center; gap:8px; background:rgba(76,201,240,.12); color:#b7eaff; border:1px solid rgba(76,201,240,.28); padding:6px 10px; border-radius:999px; font-size:12px; font-weight:600}
+    h1{font-size: clamp(30px, 4vw, 56px); line-height:1.08; margin:16px 0}
+    .lead{color:var(--muted); font-size: clamp(15px, 1.4vw, 18px)}
+    .hero-calls{display:flex; gap:12px; margin-top:18px}
+    .stat-row{display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-top:28px}
+    .stat{background:linear-gradient(180deg, var(--panel), var(--panel-2)); border:1px solid rgba(255,255,255,.06); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow)}
+    .stat h3{margin:0; font-size:22px}
+    .stat p{margin:4px 0 0; color:var(--muted); font-size:13px}
+
+    .chip{display:inline-flex; align-items:center; justify-content:center; padding:8px 10px; border-radius:12px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.06); font-size:12px}
+    .grid{display:grid; gap:16px}
+
+    /* Sections */
+    section{padding:64px 0}
+    .section-head{display:flex; align-items:end; justify-content:space-between; gap:16px; margin-bottom:22px}
+    .eyebrow{letter-spacing:.18em; text-transform:uppercase; color:#9fb0ca; font-size:12px}
+    h2{font-size: clamp(24px, 3vw, 38px); margin:6px 0 0}
+    .cards{display:grid; grid-template-columns: repeat(3, 1fr); gap:16px}
+    .card{background:linear-gradient(180deg, var(--panel), var(--panel-2)); border:1px solid rgba(255,255,255,.07); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow)}
+    .card h3{margin:4px 0 6px}
+    .card p{margin:0; color:var(--muted)}
+
+    .icon{width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center; border-radius:10px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08)}
+
+    /* Process */
+    .process{display:grid; grid-template-columns: repeat(4, 1fr); gap:16px}
+    .step{position:relative}
+    .step .num{position:absolute; top:-10px; right:-10px; background:rgba(34,211,238,.18); border:1px solid rgba(34,211,238,.35); color:#c7f9ff; width:30px; height:30px; border-radius:999px; display:grid; place-items:center; font-weight:800; font-size:12px}
+
+    /* Portfolio */
+    .filters{display:flex; gap:10px; flex-wrap:wrap; margin:8px 0 18px}
+    .filters button{padding:8px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.1); background:transparent; color:var(--text); cursor:pointer}
+    .filters button.active{background:rgba(76,201,240,.14); border-color:rgba(76,201,240,.34)}
+    .gallery{display:grid; grid-template-columns: repeat(3, 1fr); gap:14px}
+    .tile{position:relative; overflow:hidden; border-radius:14px; border:1px solid rgba(255,255,255,.08); background:linear-gradient(180deg,#0f172a,#0b1222)}
+    .tile .meta{position:absolute; inset:auto 0 0 0; padding:12px; background:linear-gradient(180deg, transparent, rgba(0,0,0,.7)); font-size:13px}
+    .tile .tag{font-size:11px; opacity:.8}
+
+    /* Quote / Contact */
+    .quote{display:grid; grid-template-columns: 1fr 1fr; gap:20px}
+    form{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    label{font-size:13px; color:#a9b8d2}
+    input, select, textarea{
+      width:100%; padding:12px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.03); color:var(--text); outline:none;
+    }
+    textarea{min-height:120px; grid-column:1/-1}
+    .full{grid-column:1/-1}
+    .hint{font-size:12px; color:#93a6c6}
+
+    /* Footer */
+    footer{padding:28px 0 40px; border-top:1px solid rgba(255,255,255,.07); background:linear-gradient(180deg, rgba(12,18,32,.6), rgba(12,18,32,.2))}
+    .foot{display:grid; grid-template-columns:1.2fr .8fr .8fr .8fr; gap:20px}
+    .foot h4{margin:0 0 8px}
+    .foot ul{list-style:none; padding:0; margin:0}
+    .foot li{margin:8px 0}
+    .social{display:flex; gap:10px}
+    .mini{font-size:12px; color:#9fb0ca}
+
+    /* Utilities */
+    .pill{display:inline-block; padding:6px 10px; border:1px solid rgba(255,255,255,.1); border-radius:999px; font-size:12px}
+    .row{display:flex; gap:10px; flex-wrap:wrap}
+    .hidden{display:none !important}
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero-grid{grid-template-columns: 1fr}
+      .stat-row{grid-template-columns: repeat(2,1fr)}
+      .cards{grid-template-columns: repeat(2,1fr)}
+      .process{grid-template-columns: repeat(2,1fr)}
+      .gallery{grid-template-columns: repeat(2,1fr)}
+      .quote{grid-template-columns: 1fr}
+      .foot{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width: 680px){
+      .cards{grid-template-columns: 1fr}
+      .process{grid-template-columns: 1fr}
+      .gallery{grid-template-columns: 1fr}
+      .stat-row{grid-template-columns: 1fr}
+      .nav .links{display:none}
+      .menu-btn{display:inline-flex}
+      .mobile-nav{display:flex}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <a href="#home" class="logo" aria-label="VoltForge home">
+        <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <path d="M16 2l-4 10h6l-6 18 14-20h-8l4-8z" fill="url(#g)"/>
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#4cc9f0"/>
+              <stop offset="1" stop-color="#a78bfa"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span>VoltForge Circuits</span>
+      </a>
+      <nav class="links" aria-label="Primary">
+        <a class="link" href="#services">Services</a>
+        <a class="link" href="#capabilities">Capabilities</a>
+        <a class="link" href="#industries">Industries</a>
+        <a class="link" href="#process">Process</a>
+        <a class="link" href="#portfolio">Portfolio</a>
+        <a class="link" href="#quote">Get a Quote</a>
+        <a class="link" href="#contact">Contact</a>
+      </nav>
+      <div class="row">
+        <button class="cta secondary" onclick="scrollToId('quote')">Request Quote</button>
+        <button class="menu-btn" aria-label="Toggle menu" onclick="toggleMenu()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+    <div id="mobileNav" class="container mobile-nav hidden">
+      <a class="link" href="#services" onclick="toggleMenu()">Services</a>
+      <a class="link" href="#capabilities" onclick="toggleMenu()">Capabilities</a>
+      <a class="link" href="#industries" onclick="toggleMenu()">Industries</a>
+      <a class="link" href="#process" onclick="toggleMenu()">Process</a>
+      <a class="link" href="#portfolio" onclick="toggleMenu()">Portfolio</a>
+      <a class="link" href="#quote" onclick="toggleMenu()">Get a Quote</a>
+      <a class="link" href="#contact" onclick="toggleMenu()">Contact</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="home" class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="badge">ISO 9001:2015 • IPC Class 2/3 • RoHS</span>
+        <h1>Custom Electronics & PCB Manufacturing — from idea to pilot run, fast.</h1>
+        <p class="lead">We design and build production‑ready hardware: embedded systems, IoT devices, power electronics and high‑reliability PCBs. Get engineering, prototyping and manufacturing under one roof.</p>
+        <div class="hero-calls">
+          <button class="cta" onclick="scrollToId('quote')">Get an Instant Quote</button>
+          <a class="cta secondary" href="#portfolio">See Work</a>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><h3>500+ </h3><p>Projects shipped</p></div>
+          <div class="stat"><h3><span aria-hidden>≤</span>10 days</h3><p>Typical prototype lead time</p></div>
+          <div class="stat"><h3>99.3%</h3><p>On‑time delivery</p></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="height:100%">
+          <h3>Capabilities at a glance</h3>
+          <div class="grid" style="grid-template-columns:1fr 1fr; margin-top:10px">
+            <span class="chip">6/6 mil trace/space</span>
+            <span class="chip">4–12 layer PCBs</span>
+            <span class="chip">BGA/QFN assembly</span>
+            <span class="chip">In‑circuit testing</span>
+            <span class="chip">Conformal coating</span>
+            <span class="chip">DFM/DFA review</span>
+          </div>
+          <p class="hint" style="margin-top:10px">Full stack: schematic → layout → BOM → assembly → test → packaging.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="services">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">What we do</div>
+          <h2>End‑to‑end electronics services</h2>
+        </div>
+        <div class="row">
+          <span class="pill">NDA‑friendly</span>
+          <span class="pill">Rapid prototyping</span>
+          <span class="pill">Flexible MOQs</span>
+        </div>
+      </div>
+      <div class="cards">
+        <div class="card">
+          <div class="icon">🔧</div>
+          <h3>Design & Engineering</h3>
+          <p>Schematics, PCB layout (Altium/KiCad), firmware, power design, RF, and signal integrity with DFM/DFA at every step.</p>
+        </div>
+        <div class="card">
+          <div class="icon">⚡</div>
+          <h3>Prototyping</h3>
+          <p>Quick‑turn boards, 3D‑printed/laser‑cut enclosures, in‑house SMT with stencil printing and reflow for fast iterations.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🏭</div>
+          <h3>Manufacturing</h3>
+          <p>Low‑to‑mid volume PCB assembly (SMT/THT), AOI, conformal coating, and full functional testing with documentation.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🧪</div>
+          <h3>Testing & Certification</h3>
+          <p>ICT/JTAG, boundary scan, environmental stress, and guidance for CE/FCC/UL with pre‑compliance support.</p>
+        </div>
+        <div class="card">
+          <div class="icon">📦</div>
+          <h3>Supply & BOM</h3>
+          <p>BOM optimization, lifecycle checks, alternates, and vendor management to ensure your design can scale.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🧭</div>
+          <h3>Retrofit & Sustenance</h3>
+          <p>Re‑engineering legacy boards, ECOs, obsolescence handling, and ongoing firmware/DFM updates.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Capabilities -->
+  <section id="capabilities">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Technical depth</div>
+          <h2>Build for performance, reliability, and scale</h2>
+        </div>
+      </div>
+      <div class="cards">
+        <div class="card">
+          <h3>PCB Stackups</h3>
+          <p>4–12 layers, controlled impedance, mixed‑signal isolation, split planes, microvias, HDI options.</p>
+        </div>
+        <div class="card">
+          <h3>Assembly</h3>
+          <p>BGA, QFN, 0402/0201 passives, selective wave and reflow. Lead‑free RoHS and leaded lines available.</p>
+        </div>
+        <div class="card">
+          <h3>Embedded</h3>
+          <p>ARM Cortex‑M/A, ESP32, STM32, Nordic, FreeRTOS, Zephyr, bootloaders, OTA, low‑power design.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Industries -->
+  <section id="industries">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Who we serve</div>
+          <h2>Industries & applications</h2>
+        </div>
+      </div>
+      <div class="cards">
+        <div class="card"><h3>Industrial IoT</h3><p>Telemetry, gateways, sensor nodes, condition monitoring.</p></div>
+        <div class="card"><h3>Energy & Power</h3><p>DC‑DC, motor control, solar inverters, battery management.</p></div>
+        <div class="card"><h3>Med‑Tech</h3><p>Portable diagnostics, wearables, safety‑critical devices.</p></div>
+        <div class="card"><h3>Automotive</h3><p>12/24V systems, CAN/LIN, EMI‑robust designs.</p></div>
+        <div class="card"><h3>Consumer</h3><p>Smart home, audio, small appliances, connected devices.</p></div>
+        <div class="card"><h3>Research</h3><p>University and lab prototypes, custom instruments.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section id="process">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">How it works</div>
+          <h2>A clear path from idea to hardware</h2>
+        </div>
+      </div>
+      <div class="process">
+        <div class="card step"><div class="num">1</div><h3>Define</h3><p>We capture specs, constraints, and success metrics, then sign NDA if needed.</p></div>
+        <div class="card step"><div class="num">2</div><h3>Design</h3><p>Schematics, layout, and DFM/DFA review with early BOM risk checks.</p></div>
+        <div class="card step"><div class="num">3</div><h3>Build</h3><p>Boards fabricated and assembled with AOI and electrical test.</p></div>
+        <div class="card step"><div class="num">4</div><h3>Validate</h3><p>Functional verification, firmware bring‑up, and certification guidance.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfolio -->
+  <section id="portfolio">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Selected work</div>
+          <h2>Portfolio</h2>
+        </div>
+      </div>
+      <div class="filters" role="tablist" aria-label="Portfolio filters">
+        <button class="active" data-filter="all" role="tab" aria-selected="true">All</button>
+        <button data-filter="pcb" role="tab">PCB</button>
+        <button data-filter="iot" role="tab">IoT</button>
+        <button data-filter="power" role="tab">Power</button>
+      </div>
+      <div class="gallery" id="gallery">
+        <!-- Placeholder tiles with simple SVGs so it works offline -->
+        <div class="tile" data-category="pcb">
+          <svg viewBox="0 0 400 220" fill="none" aria-hidden="true"><rect x="0" y="0" width="400" height="220" rx="12" fill="#0a1430"/><rect x="24" y="24" width="352" height="172" rx="10" stroke="#4cc9f0" stroke-width="2"/><circle cx="120" cy="110" r="42" stroke="#a78bfa" stroke-width="2"/><path d="M162 110h110" stroke="#4cc9f0" stroke-width="3" stroke-linecap="round"/></svg>
+          <div class="meta"><div>High‑speed 6‑layer control board</div><div class="tag">PCB</div></div>
+        </div>
+        <div class="tile" data-category="iot">
+          <svg viewBox="0 0 400 220" fill="none" aria-hidden="true"><rect width="400" height="220" rx="12" fill="#0a1430"/><rect x="40" y="40" width="320" height="140" rx="8" stroke="#4cc9f0"/><circle cx="100" cy="110" r="18" stroke="#a78bfa"/><circle cx="160" cy="110" r="18" stroke="#a78bfa"/><circle cx="220" cy="110" r="18" stroke="#a78bfa"/><path d="M280 90h40M280 110h40M280 130h40" stroke="#4cc9f0"/></svg>
+          <div class="meta"><div>ESP32 gateway with LTE</div><div class="tag">IoT</div></div>
+        </div>
+        <div class="tile" data-category="power">
+          <svg viewBox="0 0 400 220" fill="none" aria-hidden="true"><rect width="400" height="220" rx="12" fill="#0a1430"/><path d="M80 140c40-60 80-60 120 0s80 60 120 0" stroke="#22d3ee" stroke-width="3" fill="none"/><rect x="60" y="60" width="280" height="30" rx="6" stroke="#a78bfa"/></svg>
+          <div class="meta"><div>48V motor driver, 20A</div><div class="tag">Power</div></div>
+        </div>
+        <div class="tile" data-category="pcb">
+          <svg viewBox="0 0 400 220" fill="none" aria-hidden="true"><rect width="400" height="220" rx="12" fill="#0a1430"/><rect x="24" y="24" width="352" height="172" rx="10" stroke="#4cc9f0" stroke-dasharray="6 6"/><path d="M60 160h280" stroke="#a78bfa"/></svg>
+          <div class="meta"><div>Rigid‑flex sensor board</div><div class="tag">PCB</div></div>
+        </div>
+        <div class="tile" data-category="iot">
+          <svg viewBox="0 0 400 220" fill="none" aria-hidden="true"><rect width="400" height="220" rx="12" fill="#0a1430"/><rect x="70" y="70" width="260" height="80" rx="10" stroke="#4cc9f0"/><path d="M90 110h80M190 110h100" stroke="#a78bfa"/></svg>
+          <div class="meta"><div>BLE wearable dev kit</div><div class="tag">IoT</div></div>
+        </div>
+        <div class="tile" data-category="power">
+          <svg viewBox="0 0 400 220" fill="none" aria-hidden="true"><rect width="400" height="220" rx="12" fill="#0a1430"/><path d="M60 140h280" stroke="#4cc9f0"/><path d="M180 80l20 20-20 20" stroke="#a78bfa"/></svg>
+          <div class="meta"><div>DC‑DC converter module</div><div class="tag">Power</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quote / Contact -->
+  <section id="quote">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Start a project</div>
+          <h2>Request a quote</h2>
+        </div>
+        <p class="hint">Average response time: under 24 hours • We can sign your NDA</p>
+      </div>
+      <div class="quote">
+        <div class="card">
+          <form id="quoteForm" novalidate>
+            <div class="full">
+              <label for="name">Full Name</label>
+              <input id="name" name="name" placeholder="Jane Doe" required />
+            </div>
+            <div>
+              <label for="email">Work Email</label>
+              <input id="email" name="email" type="email" placeholder="jane@company.com" required />
+            </div>
+            <div>
+              <label for="company">Company</label>
+              <input id="company" name="company" placeholder="Acme Robotics" />
+            </div>
+            <div>
+              <label for="phone">Phone</label>
+              <input id="phone" name="phone" type="tel" placeholder="+91 98765 43210" />
+            </div>
+            <div>
+              <label for="project">Project Type</label>
+              <select id="project" name="project">
+                <option>PCB Design</option>
+                <option>PCB Assembly</option>
+                <option>Firmware & Embedded</option>
+                <option>IoT Device</option>
+                <option>Power Electronics</option>
+              </select>
+            </div>
+            <div>
+              <label for="budget">Budget</label>
+              <select id="budget" name="budget">
+                <option>₹50k – ₹2L</option>
+                <option>₹2L – ₹10L</option>
+                <option>₹10L+</option>
+              </select>
+            </div>
+            <div>
+              <label for="timeline">Timeline</label>
+              <select id="timeline" name="timeline">
+                <option>As soon as possible</option>
+                <option>1–2 months</option>
+                <option>3+ months</option>
+              </select>
+            </div>
+            <div class="full">
+              <label for="message">Brief</label>
+              <textarea id="message" name="message" placeholder="Tell us about specs, constraints, quantities, certifications, etc." required></textarea>
+            </div>
+            <div class="row full" style="align-items:center; justify-content:space-between">
+              <label class="row" style="align-items:center; gap:8px">
+                <input id="nda" type="checkbox"/> Require NDA
+              </label>
+              <button class="cta" type="submit">Submit Request</button>
+            </div>
+            <p id="formMsg" class="hint full" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+        <div class="card">
+          <h3>Why teams choose VoltForge</h3>
+          <ul>
+            <li>✔️ Senior engineers on every project</li>
+            <li>✔️ Fast, transparent communication</li>
+            <li>✔️ Test reports and full documentation</li>
+            <li>✔️ Flexible engagement: time & materials or fixed‑bid</li>
+          </ul>
+          <div style="margin-top:16px">
+            <div class="mini">Pune • Bengaluru • Remote</div>
+            <div class="mini">Mon–Fri, 9:30–18:00 IST</div>
+            <div class="row social" style="margin-top:10px">
+              <a class="icon" href="#" aria-label="LinkedIn">in</a>
+              <a class="icon" href="#" aria-label="GitHub">GH</a>
+              <a class="icon" href="#" aria-label="Email">@</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Footer Block -->
+  <section id="contact">
+    <div class="container">
+      <div class="card" style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap">
+        <div>
+          <div class="eyebrow">Have files ready?</div>
+          <h3 style="margin:4px 0">Email GERBER/BOM to <a href="mailto:hello@voltforge.example">hello@voltforge.example</a></h3>
+          <div class="mini">We’ll review for DFM & get back with pricing within 1 business day.</div>
+        </div>
+        <button class="cta" onclick="scrollToId('quote')">Start Quote</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container foot">
+      <div>
+        <div class="logo" style="margin-bottom:6px">
+          <svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M16 2l-4 10h6l-6 18 14-20h-8l4-8z" fill="url(#g2)"/></svg>
+          <span>VoltForge Circuits</span>
+          <svg width="0" height="0"><defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4cc9f0"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs></svg>
+        </div>
+        <div class="mini">Custom electronics design & manufacturing. © <span id="y"></span></div>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#process">Process</a></li>
+          <li><a href="#portfolio">Portfolio</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Manufacturing guidelines</a></li>
+          <li><a href="#">BOM checklist</a></li>
+          <li><a href="#">Capabilities PDF</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li class="mini">hello@voltforge.example</li>
+          <li class="mini">+91 98xx‑xxx‑xxx</li>
+          <li class="mini">Pune, India</li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scroll utility
+    function scrollToId(id){
+      const el = document.getElementById(id);
+      if(!el) return; 
+      window.scrollTo({top: el.offsetTop - 70, behavior: 'smooth'});
+    }
+
+    // Mobile nav
+    function toggleMenu(){
+      const nav = document.getElementById('mobileNav');
+      nav.classList.toggle('hidden');
+    }
+
+    // Portfolio filter
+    const filterButtons = document.querySelectorAll('.filters button');
+    const tiles = document.querySelectorAll('.gallery .tile');
+    filterButtons.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        filterButtons.forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        const f = btn.dataset.filter;
+        tiles.forEach(t=>{
+          const show = f==='all' || t.dataset.category === f;
+          t.style.display = show ? 'block' : 'none';
+        })
+      });
+    });
+
+    // Quote form
+    const form = document.getElementById('quoteForm');
+    const msg = document.getElementById('formMsg');
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      // Basic validation
+      const data = Object.fromEntries(new FormData(form).entries());
+      if(!data.name || !data.email || !data.message){
+        msg.textContent = 'Please fill your name, a valid email, and project brief.';
+        msg.style.color = '#fca5a5';
+        return;
+      }
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)){
+        msg.textContent = 'Please enter a valid email address.';
+        msg.style.color = '#fca5a5';
+        return;
+      }
+      // Simulate success (replace with real backend submission)
+      msg.textContent = 'Thanks! Your request has been received. We will reach out shortly.';
+      msg.style.color = '#86efac';
+      form.reset();
+    });
+
+    // Current year in footer
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Reveal on scroll (simple)
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){ entry.target.style.transform='translateY(0)'; entry.target.style.opacity=1; }
+      })
+    }, {threshold:.12});
+    document.querySelectorAll('.card, .tile, .stat').forEach(el=>{
+      el.style.transform='translateY(10px)'; el.style.opacity=.0; el.style.transition='transform .6s ease, opacity .6s ease';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
